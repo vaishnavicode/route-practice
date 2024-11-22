@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import { Typography } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import IconButton from "@mui/material/IconButton";
@@ -14,6 +14,7 @@ import { LogInContext } from "../contexts/loginContext";
 import Stack from "@mui/material/Stack";
 import Grid2 from "@mui/material/Grid2";
 import NavigationBar from "./navigationBar";
+import ShareButton from "./shareButton";
 
 export default function IndividualPost() {
   // Use Context
@@ -22,6 +23,7 @@ export default function IndividualPost() {
 
   // Use State
   const [individualBlog, setIndividualBlog] = useState({});
+  const [share, setShare] = useState(false);
 
   // Get the id param from the URL.
   let { id } = useParams();
@@ -45,6 +47,10 @@ export default function IndividualPost() {
         console.log("axios called");
       });
   }, [setIndividualBlog, id]);
+
+  useEffect(() => {
+    console.log("jey");
+  }, []);
 
   if (!isLoggedIn) {
     return (
@@ -85,20 +91,35 @@ export default function IndividualPost() {
               <Typography>{individualBlog.body}</Typography>
             </CardContent>
             <CardActions disableSpacing>
-              <IconButton
-                aria-label="add to favorites"
-                onClick={() => {
-                  like ? setLike(false) : setLike(true);
-                }}
-              >
-                <FavoriteIcon color={like ? "error" : "disabled"} />
-              </IconButton>
-              <IconButton aria-label="share">
-                <ShareIcon />
-              </IconButton>
+              <Tooltip title="Like">
+                <IconButton
+                  aria-label="add to favorites"
+                  onClick={() => {
+                    like ? setLike(false) : setLike(true);
+                  }}
+                >
+                  <FavoriteIcon
+                    color={like ? "error" : "disabled"}
+                    sx={{ "&:hover": { color: "#d32f2f" } }}
+                  />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Share">
+                <IconButton
+                  aria-label="share"
+                  onClick={() => {
+                    setShare(true);
+                  }}
+                  sx={{ "&:hover": { color: "#1976d2" } }}
+                >
+                  <ShareIcon />
+                </IconButton>
+              </Tooltip>
+
               <Link to="/blogs">
                 <Button variant="text">Back</Button>
               </Link>
+              <ShareButton share={share} setShare={setShare} />
             </CardActions>
           </Card>
         </Box>
