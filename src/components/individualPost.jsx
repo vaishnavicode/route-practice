@@ -48,10 +48,6 @@ export default function IndividualPost() {
       });
   }, [setIndividualBlog, id]);
 
-  useEffect(() => {
-    console.log("jey");
-  }, []);
-
   if (!isLoggedIn) {
     return (
       <>

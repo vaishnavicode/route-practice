@@ -19,7 +19,7 @@ const LogOut = () => {
   return (
     <>
       <h1 style={{ justifySelf: "center" }}>Logging You Out</h1>
-      <Navigate to="/home" />
+      <Navigate to="/" />
     </>
   );
 };

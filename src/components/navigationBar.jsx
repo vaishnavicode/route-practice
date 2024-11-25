@@ -24,6 +24,11 @@ export default function NavigationBar() {
           <Link to="/about" style={{ color: "white" }}>
             <Button color="inherit">About</Button>
           </Link>
+          {isLoggedIn && (
+            <Link to="/blogs/add" style={{ color: "white" }}>
+              <Button color="inherit">Add Blog</Button>
+            </Link>
+          )}
           <Link to="/blogs" style={{ color: "white" }}>
             <Button color="inherit">Blog</Button>
           </Link>

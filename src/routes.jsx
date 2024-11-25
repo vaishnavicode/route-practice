@@ -8,6 +8,7 @@ import SignUp from "./pages/signup";
 import LogIn from "./pages/login";
 import LogOut from "./pages/logout";
 import IndividualPost from "./components/individualPost";
+import CreateBlog from "./pages/createBlog";
 
 const AppRoute = () => {
   return (
@@ -21,8 +22,9 @@ const AppRoute = () => {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<LogIn />} />
       <Route path="/logout" element={<LogOut />} />
-      <Route path="/*" element={<Home />} />
       <Route path="/posts/:id" element={<IndividualPost />} />
+      <Route path="/blogs/add" element={<CreateBlog />} />
+      <Route path="/*" element={<Home />} />
     </Routes>
   );
 };
