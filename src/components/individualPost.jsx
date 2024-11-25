@@ -8,18 +8,20 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import IconButton from "@mui/material/IconButton";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
 import Button from "@mui/material/Button";
 import { LogInContext } from "../contexts/loginContext";
 import Stack from "@mui/material/Stack";
 import Grid2 from "@mui/material/Grid2";
 import NavigationBar from "./navigationBar";
 import ShareButton from "./shareButton";
+import { getAllPosts } from "../api/getAllPosts";
+import { LoaderContext } from "../contexts/loaderContext";
 
 export default function IndividualPost() {
   // Use Context
 
   const { isLoggedIn } = useContext(LogInContext);
+  const { setIsLoading } = useContext(LoaderContext);
 
   // Use State
   const [individualBlog, setIndividualBlog] = useState({});
@@ -32,21 +34,21 @@ export default function IndividualPost() {
   //   Use Effect
 
   useEffect(() => {
-    axios
-      .get("https://jsonplaceholder.typicode.com/posts")
-      .then(function (response) {
-        var data = response.data.filter((value) => {
+    setIsLoading(true);
+
+    getAllPosts(
+      (res) => {
+        setIsLoading(false);
+        var data = res.filter((value) => {
           return id === String(value.id);
         });
         setIndividualBlog(data[0]);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(function () {
-        console.log("axios called");
-      });
-  }, [setIndividualBlog, id]);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }, [setIndividualBlog, id, setIsLoading]);
 
   if (!isLoggedIn) {
     return (

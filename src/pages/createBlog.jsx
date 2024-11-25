@@ -7,7 +7,7 @@ import { Stack } from "@mui/material";
 import { UserContext } from "../contexts/userContext";
 import { Grid2 } from "@mui/material";
 import { Navigate } from "react-router-dom";
-import axios from "axios";
+import { sendPost } from "../api/sendPost";
 
 const CreateBlog = () => {
   // UseCont
@@ -45,18 +45,17 @@ const CreateBlog = () => {
 
     var data = { ...form, userId: user.id };
     if (!temp.title && !temp.post) {
-      axios
-        .post("https://jsonplaceholder.typicode.com/posts", data)
-        .then(function (response) {
+      sendPost(
+        (response) => {
           console.log(response);
           setSubmit(true);
-        })
-        .catch(function (error) {
+        },
+        (error) => {
           console.log(error);
-        })
-        .finally(function () {
-          console.log("axios called");
-        });
+          alert("Error! Please try again!");
+        },
+        data
+      );
     }
   };
 
@@ -89,7 +88,7 @@ const CreateBlog = () => {
   } else {
     return (
       <>
-        {submit && <Navigate to="/" />}
+        {submit && <Navigate to="/blogs" />}
         <div style={{ justifySelf: "center", justifyContent: "center" }}>
           <h1 style={{ justifySelf: "center" }}>Add Blog</h1>
           <Box

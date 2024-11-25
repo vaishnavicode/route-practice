@@ -3,33 +3,33 @@ import { LogInContext } from "../contexts/loginContext";
 import Button from "@mui/material/Button";
 import { Grid2, Stack } from "@mui/material";
 import NavigationBar from "../components/navigationBar";
-import axios from "axios";
 import Post from "../components/post";
 import { BlogContext } from "../contexts/blogContext";
+import { getAllPosts } from "../api/getAllPosts";
+import { LoaderContext } from "../contexts/loaderContext";
 
 const Blogs = () => {
   // Use Context
   const { isLoggedIn } = useContext(LogInContext);
   const { blog, setBlog } = useContext(BlogContext);
+  const { setIsLoading } = useContext(LoaderContext);
 
   // Use Effect
 
   useEffect(() => {
     if (isLoggedIn) {
-      axios
-        .get("https://jsonplaceholder.typicode.com/posts")
-        .then(function (response) {
-          setBlog(response.data);
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-        .finally(function () {
-          console.log("axios called");
-        });
+      setIsLoading(true);
+      getAllPosts(
+        (res) => {
+          setBlog(res);
+          setIsLoading(false);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
     }
-  }, [isLoggedIn, setBlog]);
+  }, [isLoggedIn, setIsLoading, setBlog]);
 
   if (isLoggedIn) {
     return (
